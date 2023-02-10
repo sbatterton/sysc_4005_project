@@ -2,8 +2,8 @@ from simpy.resources import container
 
 
 class Inspector(object):
-    def __init__(self, n, c, env, data):
-        self.n = n  # number of the Inspector
+    def __init__(self, name, c, env, data):
+        self.name = name  # name of the inspector
         self.c = c  # will be just [c1] for inspector 1 and [c2, c3] for inspector 2
         self.env = env
         self.action = env.process(self.run())
@@ -15,8 +15,8 @@ class Inspector(object):
 
 
 class Workstation(object):
-    def __init__(self, n, c, env, data):
-        self.n = n  # number of the Workstation
+    def __init__(self, name, c, env, data):
+        self.name = name  # name of the Workstation
         self.c = c  # will be [c1], [c1, c2], [c1, c3]
         self.env = env
         self.data = data
