@@ -12,10 +12,10 @@ if __name__ == "__main__":
     inspector_1_data = [
         float(x) * 60 for x in open("data/servinsp1.dat").read().splitlines() if x
     ]
-    inspector_2_data = [
+    inspector_22_data = [
         float(x) * 60 for x in open("data/servinsp22.dat").read().splitlines() if x
     ]
-    inspector_3_data = [
+    inspector_23_data = [
         float(x) * 60 for x in open("data/servinsp23.dat").read().splitlines() if x
     ]
 
@@ -75,7 +75,7 @@ if __name__ == "__main__":
             "inspector_2",
             ["c2", "c3"],
             env,
-            inspector_2_data,
+            [inspector_22_data, inspector_23_data],
             simulation_output_variables,
             workstations,
         )

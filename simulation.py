@@ -14,13 +14,13 @@ class Inspector(object):
 
     def run(self):
         while True:
-            service_time = choice(self.data)
-            self.simulation_output_variables.add_service_time(self.name, service_time)
-
-            yield self.env.timeout(service_time)
-
-            block_time = self.env.now
             if self.name == "inspector_1":
+                service_time = choice(self.data)
+                self.simulation_output_variables.add_service_time(
+                    self.name, service_time
+                )
+                yield self.env.timeout(service_time)
+                block_time = self.env.now
                 if (
                     self.workstations[0].buffer["c1"].level
                     <= self.workstations[1].buffer["c1"].level
@@ -45,9 +45,21 @@ class Inspector(object):
                     if (
                         choice(self.c) == "c2"
                     ):  # Randomly decides which component to make
+                        service_time = choice(self.data[0])
+                        self.simulation_output_variables.add_service_time(
+                            self.name, service_time
+                        )
+                        yield self.env.timeout(service_time)
+                        block_time = self.env.now
                         yield self.workstations[1].buffer["c2"].put(1)
                         # print("Added component 2 to workstation 2 buffer")
                     else:
+                        service_time = choice(self.data[1])
+                        self.simulation_output_variables.add_service_time(
+                            self.name, service_time
+                        )
+                        yield self.env.timeout(service_time)
+                        block_time = self.env.now
                         yield self.workstations[2].buffer["c3"].put(1)
                         # print("Added component 3 to workstation 3 buffer")
             self.simulation_output_variables.add_block_time(
