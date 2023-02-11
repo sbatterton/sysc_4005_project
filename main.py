@@ -2,15 +2,11 @@
 from simulation import Inspector, Workstation
 import simpy
 from output_variables import SimulationOutputVariables
-from os import *
 
 if __name__ == "__main__":
 
-    print("Enter nothing for default simulation values (1000, 28000)")
-    REPLICATIONS = int(input("Enter Replications: ") or "1000")
-    REPLICATION_DURATION = int(input("Enter time (sec): ") or "28000")
-
-    simulation_output_variables = SimulationOutputVariables()
+    REPLICATIONS = 10
+    REPLICATION_DURATION = 1000000
 
     # import data from dat files
     inspector_1_data = [
@@ -37,21 +33,57 @@ if __name__ == "__main__":
     for iteration in range(1, REPLICATIONS + 1):
 
         #   Environment
+        # print("Creating Simulation Environment")
         env = simpy.Environment()
 
-        # Class instantiations
-        inspector_1 = Inspector("inspector_1", ["c1"], env, inspector_1_data)
-        inspector_2 = Inspector("inspector_2", ["c2", "c3"], env, inspector_2_data)
+        simulation_output_variables = SimulationOutputVariables()
 
-        workstation_1 = Workstation("workstation_1", ["c1"], env, workstation_1_data)
+        # Class instantiations
+        workstation_1 = Workstation(
+            "workstation_1",
+            ["c1"],
+            env,
+            workstation_1_data,
+            simulation_output_variables,
+        )
         workstation_2 = Workstation(
-            "workstation_2", ["c1", "c2"], env, workstation_2_data
+            "workstation_2",
+            ["c1", "c2"],
+            env,
+            workstation_2_data,
+            simulation_output_variables,
         )
         workstation_3 = Workstation(
-            "workstation_3", ["c1", "c3"], env, workstation_3_data
+            "workstation_3",
+            ["c1", "c3"],
+            env,
+            workstation_3_data,
+            simulation_output_variables,
+        )
+
+        workstations = [workstation_1, workstation_2, workstation_3]
+
+        inspector_1 = Inspector(
+            "inspector_1",
+            ["c1"],
+            env,
+            inspector_1_data,
+            simulation_output_variables,
+            workstations,
+        )
+        inspector_2 = Inspector(
+            "inspector_2",
+            ["c2", "c3"],
+            env,
+            inspector_2_data,
+            simulation_output_variables,
+            workstations,
         )
 
         # Run simulation
-        main_env.run(until=REPLICATION_DURATION)
+        env.run(until=REPLICATION_DURATION)
 
-        print(simulation_output_variables)
+        # print(simulation_output_variables.service_times)
+        # print(simulation_output_variables.idle_times)
+        # print(simulation_output_variables.block_times)
+        print(simulation_output_variables.products)
