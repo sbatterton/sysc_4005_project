@@ -21,30 +21,28 @@ class Inspector(object):
                 )
                 yield self.env.timeout(service_time)
                 block_time = self.env.now
-                if (
-                    self.workstations[0].buffer["c1"].level
-                    <= self.workstations[1].buffer["c1"].level
-                    or self.workstations[0].buffer["c1"].level
-                    <= self.workstations[2].buffer["c1"].level
-                ):
+
+                #wait for there to be space in one of the buffers
+                while self.workstations[0].buffer["c1"].level == 2 and self.workstations[1].buffer["c1"].level == 2 and self.workstations[2].buffer["c1"].level == 2:
+                    pass
+                
+                #if ws1 has less or equal to ws2, and ws1 has less or equal to ws3, put in ws1
+                if self.workstations[0].buffer["c1"].level <= self.workstations[1].buffer["c1"].level and self.workstations[0].buffer["c1"].level <= self.workstations[2].buffer["c1"].level:
                     yield self.workstations[0].buffer["c1"].put(1)
                     # print("Added component 1 to workstation 1 buffer")
 
-                elif (
-                    self.workstations[1].buffer["c1"].level
-                    <= self.workstations[2].buffer["c1"].level
-                ):
+                #if ws2 has less or equal to ws3 put in ws2
+                elif self.workstations[1].buffer["c1"].level <= self.workstations[2].buffer["c1"].level:
                     yield self.workstations[1].buffer["c1"].put(1)
                     # print("Added component 1 to workstation 2 buffer")
 
+                #put in ws3
                 else:
                     yield self.workstations[2].buffer["c1"].put(1)
                     # print("Added component 1 to workstation 3 buffer")
             else:
                 while True:
-                    if (
-                        choice(self.c) == "c2"
-                    ):  # Randomly decides which component to make
+                    if choice(self.c) == "c2":  # Randomly decides which component to make
                         service_time = choice(self.data[0])
                         self.simulation_output_variables.add_service_time(
                             self.name, service_time
