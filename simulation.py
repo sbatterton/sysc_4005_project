@@ -1,7 +1,6 @@
 from simpy.resources import container
 from random import choice
 
-
 class Inspector(object):
     def __init__(self, name, c, env, data, simulation_output_variables, workstations):
         self.name = name  # name of the inspector
