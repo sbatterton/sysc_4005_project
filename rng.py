@@ -1,11 +1,13 @@
 from random import randint
 
+#adapted from instructions in chapter 7, slide 12
+
 #function for generating the random numbers, with n being the amount
 def combined_linear_congruential_generator(n):
     #empty list which will hold the random numbers
     randoms = []
 
-    #assigning values for m and a, from the suggestions from chapter 7, slide 12
+    #assigning values for m and a
     m1 = 2147483563
     a1 = 40014
     m2 = 2147483399
@@ -31,4 +33,5 @@ def combined_linear_congruential_generator(n):
     
     return randoms
 
-print(combined_linear_congruential_generator(300))
+for n in combined_linear_congruential_generator(330):
+    print(n)
