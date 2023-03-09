@@ -33,5 +33,5 @@ def combined_linear_congruential_generator(n):
     
     return randoms
 
-for n in combined_linear_congruential_generator(330):
+for n in combined_linear_congruential_generator(300):
     print(n)
