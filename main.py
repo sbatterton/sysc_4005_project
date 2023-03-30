@@ -85,5 +85,6 @@ if __name__ == "__main__":
 
         # print(simulation_output_variables.service_times)
         # print(simulation_output_variables.idle_times)
-        print(simulation_output_variables.block_times)
+        # print(simulation_output_variables.block_times)
+        # print(simulation_output_variables.component_times)
         print(simulation_output_variables.products)
