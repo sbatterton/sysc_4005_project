@@ -5,7 +5,7 @@ from output_variables import SimulationOutputVariables
 
 if __name__ == "__main__":
 
-    REPLICATIONS = 10
+    REPLICATIONS = 1
     REPLICATION_DURATION = 1000000
 
     # import data from dat files
@@ -85,5 +85,5 @@ if __name__ == "__main__":
 
         # print(simulation_output_variables.service_times)
         # print(simulation_output_variables.idle_times)
-        # print(simulation_output_variables.block_times)
+        print(simulation_output_variables.block_times)
         print(simulation_output_variables.products)

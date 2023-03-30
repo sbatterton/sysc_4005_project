@@ -1,4 +1,4 @@
-from simpy.resources import container
+from simpy.resources import container, store
 from random import choice
 
 class Inspector(object):
@@ -23,7 +23,7 @@ class Inspector(object):
 
                 #wait for there to be space in one of the buffers
                 while self.workstations[0].buffer["c1"].level == 2 and self.workstations[1].buffer["c1"].level == 2 and self.workstations[2].buffer["c1"].level == 2:
-                    pass
+                    yield self.env.timeout(0.1)
                 
                 #if ws1 has less or equal to ws2, and ws1 has less or equal to ws3, put in ws1
                 if self.workstations[0].buffer["c1"].level <= self.workstations[1].buffer["c1"].level and self.workstations[0].buffer["c1"].level <= self.workstations[2].buffer["c1"].level:
@@ -39,29 +39,32 @@ class Inspector(object):
                 else:
                     yield self.workstations[2].buffer["c1"].put(1)
                     # print("Added component 1 to workstation 3 buffer")
+                self.simulation_output_variables.add_block_time(self.name, self.env.now - block_time)
             else:
-                while True:
-                    if choice(self.c) == "c2":  # Randomly decides which component to make
-                        service_time = choice(self.data[0])
-                        self.simulation_output_variables.add_service_time(
-                            self.name, service_time
-                        )
-                        yield self.env.timeout(service_time)
-                        block_time = self.env.now
-                        yield self.workstations[1].buffer["c2"].put(1)
-                        # print("Added component 2 to workstation 2 buffer")
-                    else:
-                        service_time = choice(self.data[1])
-                        self.simulation_output_variables.add_service_time(
-                            self.name, service_time
-                        )
-                        yield self.env.timeout(service_time)
-                        block_time = self.env.now
-                        yield self.workstations[2].buffer["c3"].put(1)
-                        # print("Added component 3 to workstation 3 buffer")
-            self.simulation_output_variables.add_block_time(
-                self.name, self.env.now - block_time
-            )
+                if choice(self.c) == "c2":  # Randomly decides which component to make
+                    service_time = choice(self.data[0])
+                    self.simulation_output_variables.add_service_time(
+                        self.name, service_time
+                    )
+                    yield self.env.timeout(service_time)
+                    block_time = self.env.now
+                    while self.workstations[1].buffer["c2"].level == 2:
+                        yield self.env.timeout(0.1)
+                    yield self.workstations[1].buffer["c2"].put(1)
+                    self.simulation_output_variables.add_block_time(self.name, self.env.now - block_time)
+                    # print("Added component 2 to workstation 2 buffer")
+                else:
+                    service_time = choice(self.data[1])
+                    self.simulation_output_variables.add_service_time(
+                        self.name, service_time
+                    )
+                    yield self.env.timeout(service_time)
+                    block_time = self.env.now
+                    while self.workstations[2].buffer["c3"].level == 2:                            
+                        yield self.env.timeout(0.1)
+                    yield self.workstations[2].buffer["c3"].put(1)
+                    self.simulation_output_variables.add_block_time(self.name, self.env.now - block_time)
+                    # print("Added component 3 to workstation 3 buffer")
 
 
 class Workstation(object):
