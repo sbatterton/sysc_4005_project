@@ -2,6 +2,7 @@
 from simulation import Inspector, Workstation
 import simpy
 from output_variables import SimulationOutputVariables
+from tracker import Tracker
 
 if __name__ == "__main__":
 
@@ -80,6 +81,10 @@ if __name__ == "__main__":
             workstations,
         )
 
+        inspectors = [inspector_1, inspector_2]
+
+        tracker = Tracker(env, inspectors, workstations, simulation_output_variables)
+
         # Run simulation
         env.run(until=REPLICATION_DURATION)
 
@@ -87,4 +92,77 @@ if __name__ == "__main__":
         # print(simulation_output_variables.idle_times)
         # print(simulation_output_variables.block_times)
         # print(simulation_output_variables.component_times)
-        print(simulation_output_variables.products)
+        #print(simulation_output_variables.components)
+        #print(simulation_output_variables.products)
+
+        #pretty printing
+
+        count = {'c1': sum(simulation_output_variables.products.values()), 'c2': simulation_output_variables.products[2], 'c3': simulation_output_variables.products[3]}
+        average_time = {'c1': sum(simulation_output_variables.component_times['c1'])/count["c1"], 'c2': sum(simulation_output_variables.component_times['c2'])/count["c2"], 'c3': sum(simulation_output_variables.component_times['c3'])/count["c3"], 'total': sum([value for sublist in simulation_output_variables.component_times.values() for value in sublist])/len([value for sublist in simulation_output_variables.component_times.values() for value in sublist])}
+        average_count = {'c1': sum(simulation_output_variables.components['c1'])/len(simulation_output_variables.components['c1']), 'c2': sum(simulation_output_variables.components['c2'])/len(simulation_output_variables.components['c2']), 'c3': sum(simulation_output_variables.components['c3'])/len(simulation_output_variables.components['c3'])}
+        input_rate = {'c1': count['c1']/REPLICATION_DURATION, 'c2': count['c2']/REPLICATION_DURATION, 'c3': count['c3']/REPLICATION_DURATION}
+        average_service_times = {
+            "inspector_1": sum(simulation_output_variables.service_times['inspector_1'])/len(simulation_output_variables.service_times['inspector_1']),
+            "inspector_2": sum(simulation_output_variables.service_times['inspector_2'])/len(simulation_output_variables.service_times['inspector_2']),
+            "workstation_1": sum(simulation_output_variables.service_times['workstation_1'])/len(simulation_output_variables.service_times['workstation_1']),
+            "workstation_2": sum(simulation_output_variables.service_times['workstation_2'])/len(simulation_output_variables.service_times['workstation_2']),
+            "workstation_3": sum(simulation_output_variables.service_times['workstation_3'])/len(simulation_output_variables.service_times['workstation_3']),
+        }
+        percentage_block_time = {"inspector_1": (sum(simulation_output_variables.block_times['inspector_1'])/REPLICATION_DURATION)*100, "inspector_2": (sum(simulation_output_variables.block_times['inspector_2'])/REPLICATION_DURATION)*100}
+        percentage_idle_time = {"workstation_1": (sum(simulation_output_variables.idle_times['workstation_1'])/REPLICATION_DURATION)*100, "workstation_2": (sum(simulation_output_variables.idle_times['workstation_2'])/REPLICATION_DURATION)*100, "workstation_3": (sum(simulation_output_variables.idle_times['workstation_3'])/REPLICATION_DURATION)*100}
+       
+        print("Number of Products Made:")
+        print("P1:", simulation_output_variables.products[1])
+        print("P2:", simulation_output_variables.products[2])
+        print("P3:", simulation_output_variables.products[3])
+        print("Total:", sum(simulation_output_variables.products.values()))
+        print()
+
+        print("Number of Components:")
+        print("C1:", count['c1'])
+        print("C2:", count['c2'])
+        print("C3:", count['c3'])
+        print("Total:", sum(count.values()))
+        print()
+
+        print("Average Time in System:")
+        print("C1:", average_time['c1'])
+        print("C2:", average_time['c2'])
+        print("C3:", average_time['c3'])
+        print("Total:", average_time['total'])
+        print()
+
+        print("Average Number in System:")
+        print("C1:", average_count['c1'])
+        print("C2:", average_count['c2'])
+        print("C3:", average_count['c3'])
+        print("Total:", sum(average_count.values()))
+        print()
+
+        print("Input Rate to System (units/second):")
+        print("C1:", input_rate['c1'])
+        print("C2:", input_rate['c2'])
+        print("C3:", input_rate['c3'])
+        print("Total:", sum(input_rate.values()))
+        print()
+
+        print("Average Service Times:")
+        print("Inspector 1:", average_service_times['inspector_1'])
+        print("Inspector 2:", average_service_times['inspector_2'])
+        print("Workstation 1:", average_service_times['workstation_1'])
+        print("Workstation 2:", average_service_times['workstation_2'])
+        print("Workstation 3:", average_service_times['workstation_3'])
+        print()
+        
+        print("Percentage Block Time:")
+        print("Inspector 1:", percentage_block_time['inspector_1'])
+        print("Inspector 2:", percentage_block_time['inspector_2'])
+        print()
+
+        print("Percentage Idle Times:")
+        print("Inspector 1:", average_service_times['inspector_1'])
+        print("Inspector 2:", average_service_times['inspector_2'])
+        print("Workstation 1:", average_service_times['workstation_1'])
+        print("Workstation 2:", average_service_times['workstation_2'])
+        print("Workstation 3:", average_service_times['workstation_3'])
+

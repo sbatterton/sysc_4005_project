@@ -21,6 +21,9 @@ class SimulationOutputVariables(object):
             3: 0,
         }
 
+        #every time it tracks it will append each list with the number of components
+        self.components = {"c1": [], "c2": [], "c3": []}
+        
         self.component_times = {"c1": [], "c2": [], "c3": []}
 
     def add_service_time(self, name, value):
@@ -37,3 +40,8 @@ class SimulationOutputVariables(object):
     
     def add_component_time(self, name, value):
         self.component_times[name].append(value)
+    
+    def add_components(self, components):
+        self.components['c1'].append(components['c1'])
+        self.components['c2'].append(components['c2'])
+        self.components['c3'].append(components['c3'])

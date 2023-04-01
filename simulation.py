@@ -9,12 +9,14 @@ class Inspector(object):
         self.data = data
         self.simulation_output_variables = simulation_output_variables
         self.workstations = workstations
+        self.current = None
         self.action = env.process(self.run())
 
     def run(self):
         while True:
             component_start_time = self.env.now
             if self.name == "inspector_1":
+                self.current = "c1"
                 service_time = choice(self.data)
                 self.simulation_output_variables.add_service_time(
                     self.name, service_time
@@ -44,6 +46,7 @@ class Inspector(object):
                 self.simulation_output_variables.add_block_time(self.name, self.env.now - block_time)
             else:
                 if choice(self.c) == "c2":  # Randomly decides which component to make
+                    self.current = "c2"
                     service_time = choice(self.data[0])
                     self.simulation_output_variables.add_service_time(
                         self.name, service_time
@@ -56,6 +59,7 @@ class Inspector(object):
                     self.simulation_output_variables.add_block_time(self.name, self.env.now - block_time)
                     # print("Added component 2 to workstation 2 buffer")
                 else:
+                    self.current = "c3"
                     service_time = choice(self.data[1])
                     self.simulation_output_variables.add_service_time(
                         self.name, service_time
@@ -76,6 +80,7 @@ class Workstation(object):
         self.env = env
         self.data = data
         self.buffer = {}
+        self.in_progress = False
         for n in c:
             self.buffer[n] = store.Store(self.env, 2)
         self.simulation_output_variables = simulation_output_variables
@@ -100,7 +105,9 @@ class Workstation(object):
             )
             service_time = choice(self.data)
             self.simulation_output_variables.add_service_time(self.name, service_time)
+            self.in_progress = True
             yield self.env.timeout(service_time)
+            self.in_progress = False
             for component in components:
                 self.simulation_output_variables.add_component_time(component[0], self.env.now - component[1])
             self.simulation_output_variables.add_product(int(self.name[-1]))
