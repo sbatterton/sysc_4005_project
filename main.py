@@ -155,14 +155,12 @@ if __name__ == "__main__":
         print()
         
         print("Percentage Block Time:")
-        print("Inspector 1:", percentage_block_time['inspector_1'])
-        print("Inspector 2:", percentage_block_time['inspector_2'])
+        print(f"Inspector 1: {percentage_block_time['inspector_1']}%")
+        print(f"Inspector 2: {percentage_block_time['inspector_2']}%")
         print()
 
         print("Percentage Idle Times:")
-        print("Inspector 1:", average_service_times['inspector_1'])
-        print("Inspector 2:", average_service_times['inspector_2'])
-        print("Workstation 1:", average_service_times['workstation_1'])
-        print("Workstation 2:", average_service_times['workstation_2'])
-        print("Workstation 3:", average_service_times['workstation_3'])
+        print(f"Workstation 1: {percentage_idle_time['workstation_1']}%")
+        print(f"Workstation 2: {percentage_idle_time['workstation_2']}%")
+        print(f"Workstation 3: {percentage_idle_time['workstation_3']}%")
 
