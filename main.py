@@ -88,19 +88,17 @@ if __name__ == "__main__":
         # Run simulation
         env.run(until=REPLICATION_DURATION)
 
-        # print(simulation_output_variables.service_times)
-        # print(simulation_output_variables.idle_times)
-        # print(simulation_output_variables.block_times)
-        # print(simulation_output_variables.component_times)
-        #print(simulation_output_variables.components)
-        #print(simulation_output_variables.products)
-
         #pretty printing
 
+        #calculating number of components
         count = {'c1': sum(simulation_output_variables.products.values()), 'c2': simulation_output_variables.products[2], 'c3': simulation_output_variables.products[3]}
+        #calculate average time components spend in the system
         average_time = {'c1': sum(simulation_output_variables.component_times['c1'])/count["c1"], 'c2': sum(simulation_output_variables.component_times['c2'])/count["c2"], 'c3': sum(simulation_output_variables.component_times['c3'])/count["c3"], 'total': sum([value for sublist in simulation_output_variables.component_times.values() for value in sublist])/len([value for sublist in simulation_output_variables.component_times.values() for value in sublist])}
+        #calculate average count of ocmponents in system
         average_count = {'c1': sum(simulation_output_variables.components['c1'])/len(simulation_output_variables.components['c1']), 'c2': sum(simulation_output_variables.components['c2'])/len(simulation_output_variables.components['c2']), 'c3': sum(simulation_output_variables.components['c3'])/len(simulation_output_variables.components['c3'])}
+        #calculate input rate to system
         input_rate = {'c1': count['c1']/REPLICATION_DURATION, 'c2': count['c2']/REPLICATION_DURATION, 'c3': count['c3']/REPLICATION_DURATION}
+        #get average of  service times
         average_service_times = {
             "inspector_1": sum(simulation_output_variables.service_times['inspector_1'])/len(simulation_output_variables.service_times['inspector_1']),
             "inspector_2": sum(simulation_output_variables.service_times['inspector_2'])/len(simulation_output_variables.service_times['inspector_2']),
@@ -108,13 +106,16 @@ if __name__ == "__main__":
             "workstation_2": sum(simulation_output_variables.service_times['workstation_2'])/len(simulation_output_variables.service_times['workstation_2']),
             "workstation_3": sum(simulation_output_variables.service_times['workstation_3'])/len(simulation_output_variables.service_times['workstation_3']),
         }
+        #get percentage block time for inspectors and idle time for workstations
         percentage_block_time = {"inspector_1": (sum(simulation_output_variables.block_times['inspector_1'])/REPLICATION_DURATION)*100, "inspector_2": (sum(simulation_output_variables.block_times['inspector_2'])/REPLICATION_DURATION)*100}
         percentage_idle_time = {"workstation_1": (sum(simulation_output_variables.idle_times['workstation_1'])/REPLICATION_DURATION)*100, "workstation_2": (sum(simulation_output_variables.idle_times['workstation_2'])/REPLICATION_DURATION)*100, "workstation_3": (sum(simulation_output_variables.idle_times['workstation_3'])/REPLICATION_DURATION)*100}
+        #calculate avergae buffer occupancy
         average_buffer_occupancy = {"workstation_1": {"c1": sum(simulation_output_variables.buffers["workstation_1"]["c1"])/len(simulation_output_variables.buffers["workstation_1"]["c1"])},
                                     "workstation_2": {"c1": sum(simulation_output_variables.buffers["workstation_2"]["c1"])/len(simulation_output_variables.buffers["workstation_2"]["c1"]), "c2": sum(simulation_output_variables.buffers["workstation_2"]["c2"])/len(simulation_output_variables.buffers["workstation_2"]["c2"])},
                                     "workstation_3": {"c1": sum(simulation_output_variables.buffers["workstation_3"]["c1"])/len(simulation_output_variables.buffers["workstation_3"]["c1"]), "c3": sum(simulation_output_variables.buffers["workstation_3"]["c3"])/len(simulation_output_variables.buffers["workstation_3"]["c3"])},    
                                     }
-       
+
+        #prints
         print("Number of Products Made:")
         print("P1:", simulation_output_variables.products[1])
         print("P2:", simulation_output_variables.products[2])

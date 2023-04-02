@@ -24,8 +24,10 @@ class SimulationOutputVariables(object):
         #every time it tracks it will append each list with the number of components
         self.components = {"c1": [], "c2": [], "c3": []}
         
+        #keep track of how long components spend in system
         self.component_times = {"c1": [], "c2": [], "c3": []}
 
+        #keep track of occupancy of each buffer
         self.buffers = {"workstation_1": {"c1": []}, "workstation_2": {"c1": [], "c2": []}, "workstation_3": {"c1": [], "c3": []}}
 
     def add_service_time(self, name, value):
