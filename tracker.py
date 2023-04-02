@@ -19,6 +19,7 @@ class Tracker(object):
                 #first get number of components in buffers
                 for c in workstation.c:                    
                     components[c] += len(workstation.buffer[c].items)
+                    self.simulation_output_variables.add_buffer(workstation.name, c, len(workstation.buffer[c].items))
 
                 #then if they are in progress add another of each component they use
                 if workstation.in_progress:

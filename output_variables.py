@@ -26,6 +26,8 @@ class SimulationOutputVariables(object):
         
         self.component_times = {"c1": [], "c2": [], "c3": []}
 
+        self.buffers = {"workstation_1": {"c1": []}, "workstation_2": {"c1": [], "c2": []}, "workstation_3": {"c1": [], "c3": []}}
+
     def add_service_time(self, name, value):
         self.service_times[name].append(value)
 
@@ -45,3 +47,6 @@ class SimulationOutputVariables(object):
         self.components['c1'].append(components['c1'])
         self.components['c2'].append(components['c2'])
         self.components['c3'].append(components['c3'])
+    
+    def add_buffer(self, name, c, n):
+        self.buffers[name][c].append(n)

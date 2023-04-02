@@ -6,7 +6,7 @@ from tracker import Tracker
 
 if __name__ == "__main__":
 
-    REPLICATIONS = 1
+    REPLICATIONS = 25
     REPLICATION_DURATION = 1000000
 
     # import data from dat files
@@ -110,6 +110,10 @@ if __name__ == "__main__":
         }
         percentage_block_time = {"inspector_1": (sum(simulation_output_variables.block_times['inspector_1'])/REPLICATION_DURATION)*100, "inspector_2": (sum(simulation_output_variables.block_times['inspector_2'])/REPLICATION_DURATION)*100}
         percentage_idle_time = {"workstation_1": (sum(simulation_output_variables.idle_times['workstation_1'])/REPLICATION_DURATION)*100, "workstation_2": (sum(simulation_output_variables.idle_times['workstation_2'])/REPLICATION_DURATION)*100, "workstation_3": (sum(simulation_output_variables.idle_times['workstation_3'])/REPLICATION_DURATION)*100}
+        average_buffer_occupancy = {"workstation_1": {"c1": sum(simulation_output_variables.buffers["workstation_1"]["c1"])/len(simulation_output_variables.buffers["workstation_1"]["c1"])},
+                                    "workstation_2": {"c1": sum(simulation_output_variables.buffers["workstation_2"]["c1"])/len(simulation_output_variables.buffers["workstation_2"]["c1"]), "c2": sum(simulation_output_variables.buffers["workstation_2"]["c2"])/len(simulation_output_variables.buffers["workstation_2"]["c2"])},
+                                    "workstation_3": {"c1": sum(simulation_output_variables.buffers["workstation_3"]["c1"])/len(simulation_output_variables.buffers["workstation_3"]["c1"]), "c3": sum(simulation_output_variables.buffers["workstation_3"]["c3"])/len(simulation_output_variables.buffers["workstation_3"]["c3"])},    
+                                    }
        
         print("Number of Products Made:")
         print("P1:", simulation_output_variables.products[1])
@@ -163,4 +167,11 @@ if __name__ == "__main__":
         print(f"Workstation 1: {percentage_idle_time['workstation_1']}%")
         print(f"Workstation 2: {percentage_idle_time['workstation_2']}%")
         print(f"Workstation 3: {percentage_idle_time['workstation_3']}%")
+        print()
 
+        print("Average Buffer Occupancy:")
+        print("Workstation 1, C1:", average_buffer_occupancy["workstation_1"]["c1"])
+        print("Workstation 2, C1:", average_buffer_occupancy["workstation_2"]["c1"])
+        print("Workstation 2, C2:", average_buffer_occupancy["workstation_2"]["c2"])
+        print("Workstation 3, C1:", average_buffer_occupancy["workstation_3"]["c1"])
+        print("Workstation 3, C3:", average_buffer_occupancy["workstation_3"]["c3"])
