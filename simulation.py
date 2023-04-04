@@ -87,6 +87,7 @@ class Workstation(object):
         self.action = env.process(self.run())
 
     def run(self):
+        previous_time = 0
         while True:
             idle_start = self.env.now
             components = []
@@ -111,4 +112,6 @@ class Workstation(object):
             for component in components:
                 self.simulation_output_variables.add_component_time(component[0], self.env.now - component[1])
             self.simulation_output_variables.add_product(int(self.name[-1]))
+            self.simulation_output_variables.add_product_cycle_time(int(self.name[-1]), self.env.now - previous_time)
+            previous_time = self.env.now
             # print(f"Product {int(self.name[-1])} assembled")

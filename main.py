@@ -6,7 +6,7 @@ from tracker import Tracker
 
 if __name__ == "__main__":
 
-    REPLICATIONS = 25
+    REPLICATIONS = 1
     REPLICATION_DURATION = 1000000
 
     # import data from dat files
@@ -28,7 +28,20 @@ if __name__ == "__main__":
     ]
     workstation_3_data = [
         float(x) * 60 for x in open("data/ws1.dat").read().splitlines() if x
-    ]
+    ] 
+
+    #testing manual values
+    '''
+    inspector_1_data = [250]
+    inspector_22_data = [1000]
+    inspector_23_data = [1000]
+
+    workstation_1_data = [1000]
+    workstation_2_data = [1000]
+    workstation_3_data = [1000]
+    '''
+
+    
 
     #   Execution loop
     for iteration in range(1, REPLICATIONS + 1):
@@ -176,3 +189,13 @@ if __name__ == "__main__":
         print("Workstation 2, C2:", average_buffer_occupancy["workstation_2"]["c2"])
         print("Workstation 3, C1:", average_buffer_occupancy["workstation_3"]["c1"])
         print("Workstation 3, C3:", average_buffer_occupancy["workstation_3"]["c3"])
+
+        #printing out product cycle times
+        """
+        for p in simulation_output_variables.product_cycle_times[1]:
+            print(p)
+        for p in simulation_output_variables.product_cycle_times[2]:
+            print(p)
+        for p in simulation_output_variables.product_cycle_times[3]:
+            print(p)
+        """
