@@ -112,6 +112,6 @@ class Workstation(object):
             for component in components:
                 self.simulation_output_variables.add_component_time(component[0], self.env.now - component[1])
             self.simulation_output_variables.add_product(int(self.name[-1]))
-            self.simulation_output_variables.add_product_cycle_time(int(self.name[-1]), self.env.now - previous_time)
+            self.simulation_output_variables.add_product_time(int(self.name[-1]), self.env.now)
             previous_time = self.env.now
             # print(f"Product {int(self.name[-1])} assembled")

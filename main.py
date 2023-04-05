@@ -190,12 +190,15 @@ if __name__ == "__main__":
         print("Workstation 3, C1:", average_buffer_occupancy["workstation_3"]["c1"])
         print("Workstation 3, C3:", average_buffer_occupancy["workstation_3"]["c3"])
 
-        #printing out product cycle times
+        #printing out product average times
         """
-        for p in simulation_output_variables.product_cycle_times[1]:
-            print(p)
-        for p in simulation_output_variables.product_cycle_times[2]:
-            print(p)
-        for p in simulation_output_variables.product_cycle_times[3]:
-            print(p)
+        for i, p in enumerate(simulation_output_variables.product_times[1]):
+            print(p/(i+1))
+        print("#####################################################################################")
+        for i, p in enumerate(simulation_output_variables.product_times[2]):
+            print(p/(i+1))
+        print("#####################################################################################")
+        for i, p in enumerate(simulation_output_variables.product_times[3]):
+            print(p/(i+1))
         """
+        

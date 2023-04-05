@@ -27,7 +27,7 @@ class SimulationOutputVariables(object):
         #keep track of how long components spend in system
         self.component_times = {"c1": [], "c2": [], "c3": []}
 
-        self.product_cycle_times = {1: [], 2: [], 3: []}
+        self.product_times = {1: [], 2: [], 3: []}
 
         #keep track of occupancy of each buffer
         self.buffers = {"workstation_1": {"c1": []}, "workstation_2": {"c1": [], "c2": []}, "workstation_3": {"c1": [], "c3": []}}
@@ -55,5 +55,5 @@ class SimulationOutputVariables(object):
     def add_buffer(self, name, c, n):
         self.buffers[name][c].append(n)
     
-    def add_product_cycle_time(self, p, time):
-        self.product_cycle_times[p].append(time)
+    def add_product_time(self, p, time):
+        self.product_times[p].append(time)
