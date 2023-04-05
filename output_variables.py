@@ -31,6 +31,8 @@ class SimulationOutputVariables(object):
 
         #keep track of occupancy of each buffer
         self.buffers = {"workstation_1": {"c1": []}, "workstation_2": {"c1": [], "c2": []}, "workstation_3": {"c1": [], "c3": []}}
+        #keep track of arrival and departure times for each buffer
+        self.buffer_times = {"workstation_1": {"c1": []}, "workstation_2": {"c1": [], "c2": []}, "workstation_3": {"c1": [], "c3": []}}
 
     def add_service_time(self, name, value):
         self.service_times[name].append(value)
@@ -57,3 +59,6 @@ class SimulationOutputVariables(object):
     
     def add_product_time(self, p, time):
         self.product_times[p].append(time)
+
+    def add_buffer_time(self, name, c, arrival, departure):
+        self.buffer_times[name][c].append([arrival, departure])

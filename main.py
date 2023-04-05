@@ -6,7 +6,7 @@ from tracker import Tracker
 
 if __name__ == "__main__":
 
-    REPLICATIONS = 1
+    REPLICATIONS = 5
     REPLICATION_DURATION = 1000000
 
     # import data from dat files
@@ -127,7 +127,19 @@ if __name__ == "__main__":
                                     "workstation_2": {"c1": sum(simulation_output_variables.buffers["workstation_2"]["c1"])/len(simulation_output_variables.buffers["workstation_2"]["c1"]), "c2": sum(simulation_output_variables.buffers["workstation_2"]["c2"])/len(simulation_output_variables.buffers["workstation_2"]["c2"])},
                                     "workstation_3": {"c1": sum(simulation_output_variables.buffers["workstation_3"]["c1"])/len(simulation_output_variables.buffers["workstation_3"]["c1"]), "c3": sum(simulation_output_variables.buffers["workstation_3"]["c3"])/len(simulation_output_variables.buffers["workstation_3"]["c3"])},    
                                     }
+        
+        #buffer arrival rate
+        average_buffer_arrival_rate = {"workstation_1": {"c1": 1/(sum([simulation_output_variables.buffer_times["workstation_1"]["c1"][i][0] - simulation_output_variables.buffer_times["workstation_1"]["c1"][i-1][0] for i in range(1, len(simulation_output_variables.buffer_times["workstation_1"]["c1"]))]) / (len(simulation_output_variables.buffer_times["workstation_1"]["c1"])-1))},
+                                    "workstation_2": {"c1": 1/(sum([simulation_output_variables.buffer_times["workstation_2"]["c1"][i][0] - simulation_output_variables.buffer_times["workstation_2"]["c1"][i-1][0] for i in range(1, len(simulation_output_variables.buffer_times["workstation_2"]["c1"]))]) / (len(simulation_output_variables.buffer_times["workstation_2"]["c1"])-1)), "c2": 1/(sum([simulation_output_variables.buffer_times["workstation_2"]["c2"][i][0] - simulation_output_variables.buffer_times["workstation_2"]["c2"][i-1][0] for i in range(1, len(simulation_output_variables.buffer_times["workstation_2"]["c2"]))]) / (len(simulation_output_variables.buffer_times["workstation_2"]["c2"])-1))},
+                                    "workstation_3": {"c1": 1/(sum([simulation_output_variables.buffer_times["workstation_3"]["c1"][i][0] - simulation_output_variables.buffer_times["workstation_3"]["c1"][i-1][0] for i in range(1, len(simulation_output_variables.buffer_times["workstation_3"]["c1"]))]) / (len(simulation_output_variables.buffer_times["workstation_3"]["c1"])-1)), "c3": 1/(sum([simulation_output_variables.buffer_times["workstation_3"]["c3"][i][0] - simulation_output_variables.buffer_times["workstation_3"]["c3"][i-1][0] for i in range(1, len(simulation_output_variables.buffer_times["workstation_3"]["c3"]))]) / (len(simulation_output_variables.buffer_times["workstation_3"]["c3"])-1))},    
+                                    }
 
+        #average time spent in buffer
+        average_buffer_time = {"workstation_1": {"c1": sum(component[1] - component[0] for component in simulation_output_variables.buffer_times["workstation_1"]["c1"])/len(simulation_output_variables.buffer_times["workstation_1"]["c1"])},
+                                    "workstation_2": {"c1": sum(component[1] - component[0] for component in simulation_output_variables.buffer_times["workstation_2"]["c1"])/len(simulation_output_variables.buffer_times["workstation_2"]["c1"]), "c2": sum(component[1] - component[0] for component in simulation_output_variables.buffer_times["workstation_2"]["c2"])/len(simulation_output_variables.buffer_times["workstation_2"]["c2"])},
+                                    "workstation_3": {"c1": sum(component[1] - component[0] for component in simulation_output_variables.buffer_times["workstation_3"]["c1"])/len(simulation_output_variables.buffer_times["workstation_3"]["c1"]), "c3": sum(component[1] - component[0] for component in simulation_output_variables.buffer_times["workstation_3"]["c3"])/len(simulation_output_variables.buffer_times["workstation_3"]["c3"])},    
+                                    }
+        
         #prints
         print("Number of Products Made:")
         print("P1:", simulation_output_variables.products[1])
@@ -189,6 +201,23 @@ if __name__ == "__main__":
         print("Workstation 2, C2:", average_buffer_occupancy["workstation_2"]["c2"])
         print("Workstation 3, C1:", average_buffer_occupancy["workstation_3"]["c1"])
         print("Workstation 3, C3:", average_buffer_occupancy["workstation_3"]["c3"])
+        print()
+        
+        print("Average Buffer Arrival Rate:")
+        print("Workstation 1, C1:", average_buffer_arrival_rate["workstation_1"]["c1"])
+        print("Workstation 2, C1:", average_buffer_arrival_rate["workstation_2"]["c1"])
+        print("Workstation 2, C2:", average_buffer_arrival_rate["workstation_2"]["c2"])
+        print("Workstation 3, C1:", average_buffer_arrival_rate["workstation_3"]["c1"])
+        print("Workstation 3, C3:", average_buffer_arrival_rate["workstation_3"]["c3"])
+        print()
+
+        print("Average Time Spent in Buffer:")
+        print("Workstation 1, C1:", average_buffer_time["workstation_1"]["c1"])
+        print("Workstation 2, C1:", average_buffer_time["workstation_2"]["c1"])
+        print("Workstation 2, C2:", average_buffer_time["workstation_2"]["c2"])
+        print("Workstation 3, C1:", average_buffer_time["workstation_3"]["c1"])
+        print("Workstation 3, C3:", average_buffer_time["workstation_3"]["c3"])
+        print()
 
         #printing out product average times
         """

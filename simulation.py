@@ -31,17 +31,17 @@ class Inspector(object):
                 
                 #if ws1 has less or equal to ws2, and ws1 has less or equal to ws3, put in ws1
                 if len(self.workstations[0].buffer["c1"].items) <= len(self.workstations[1].buffer["c1"].items) and len(self.workstations[0].buffer["c1"].items) <= len(self.workstations[2].buffer["c1"].items):
-                    yield self.workstations[0].buffer["c1"].put(['c1', component_start_time])
+                    yield self.workstations[0].buffer["c1"].put(['c1', component_start_time, self.env.now])
                     # print("Added component 1 to workstation 1 buffer")
 
                 #if ws2 has less or equal to ws3 put in ws2
                 elif len(self.workstations[1].buffer["c1"].items) <= len(self.workstations[2].buffer["c1"].items):
-                    yield self.workstations[1].buffer["c1"].put(['c1', component_start_time])
+                    yield self.workstations[1].buffer["c1"].put(['c1', component_start_time, self.env.now])
                     # print("Added component 1 to workstation 2 buffer")
 
                 #put in ws3
                 else:
-                    yield self.workstations[2].buffer["c1"].put(['c1', component_start_time])
+                    yield self.workstations[2].buffer["c1"].put(['c1', component_start_time, self.env.now])
                     # print("Added component 1 to workstation 3 buffer")
                 self.simulation_output_variables.add_block_time(self.name, self.env.now - block_time)
             else:
@@ -55,7 +55,7 @@ class Inspector(object):
                     block_time = self.env.now
                     while len(self.workstations[1].buffer["c2"].items) == 2:
                         yield self.env.timeout(0.1)
-                    yield self.workstations[1].buffer["c2"].put(['c2', component_start_time])
+                    yield self.workstations[1].buffer["c2"].put(['c2', component_start_time, self.env.now])
                     self.simulation_output_variables.add_block_time(self.name, self.env.now - block_time)
                     # print("Added component 2 to workstation 2 buffer")
                 else:
@@ -68,7 +68,7 @@ class Inspector(object):
                     block_time = self.env.now
                     while len(self.workstations[2].buffer["c3"].items) == 2:                            
                         yield self.env.timeout(0.1)
-                    yield self.workstations[2].buffer["c3"].put(['c3', component_start_time])
+                    yield self.workstations[2].buffer["c3"].put(['c3', component_start_time, self.env.now])
                     self.simulation_output_variables.add_block_time(self.name, self.env.now - block_time)
                     # print("Added component 3 to workstation 3 buffer")
 
@@ -101,6 +101,10 @@ class Workstation(object):
                 components.append(component)
                 component = yield self.buffer[self.c[1]].get()
                 components.append(component)
+
+            for component in components:
+                self.simulation_output_variables.add_buffer_time(self.name, component[0], component[2], self.env.now)
+                
             self.simulation_output_variables.add_idle_time(
                 self.name, self.env.now - idle_start
             )
