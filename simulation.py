@@ -101,7 +101,7 @@ class Workstation(object):
                 components.append(component)
                 component = yield self.buffer[self.c[1]].get()
                 components.append(component)
-
+            #add time each component was in the buffer for
             for component in components:
                 self.simulation_output_variables.add_buffer_time(self.name, component[0], component[2], self.env.now)
                 
