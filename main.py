@@ -6,7 +6,7 @@ from tracker import Tracker
 
 if __name__ == "__main__":
 
-    REPLICATIONS = 5
+    REPLICATIONS = 1
     REPLICATION_DURATION = 1000000
 
     # import data from dat files
